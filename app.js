@@ -49,6 +49,7 @@ document
   .addEventListener("click", sendNotification);
 
 async function sendNotification() {}
+const notificationValue = document.querySelector("#notification").value;
 
 if (!("Notification" in window)) {
   alert("Notification API is not available.");
