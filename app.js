@@ -38,7 +38,7 @@ async function sendNotification() {
 
   // Show the notification if permission is granted
   if (permission === "granted") {
-    showNotification(notificationValue);
+    alert(showNotification(notificationValue));
   }
 }
 
