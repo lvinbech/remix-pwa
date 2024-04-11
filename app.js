@@ -16,7 +16,10 @@
 }
  */
 
-document.querySelector("#btn").addEventListener("click", getGeolocation); // Add an event listener to the button with the ID "btn-geolocation"
+// Geolocation for PWA
+document
+  .querySelector("#btn-geolocation")
+  .addEventListener("click", getGeolocation); // Add an event listener to the button with the ID "btn-geolocation"
 
 async function getGeolocation() {
   const geolocation = document.querySelector("#geolocation"); // Get the geolocation element
@@ -38,4 +41,44 @@ async function getGeolocation() {
 
     map.src = `https://www.openstreetmap.org/export/embed.html?bbox=${longitude},${latitude}&marker=${latitude},${longitude}`; // Set the src attribute of the map to the OpenStreetMap URL
   });
+}
+
+// Notifications for PWA
+document
+  .querySelector("#btn-notification")
+  .addEventListener("click", sendNotification);
+
+async function sendNotification() {}
+
+if (!("Notification" in window)) {
+  alert("Notification API is not available.");
+  return;
+}
+
+let permission = Notification.permission;
+if (permission !== "granted" && permission !== "denied") {
+  permission = await Notification.requestPermission();
+}
+
+if (permission === "granted") {
+  showNotification(notificationValue);
+}
+
+if (permission === "denied") {
+  alert("Permission for notifications is denied.");
+  return;
+}
+
+async function showNotification(body) {
+  const registration = await navigator.serviceWorker.getRegistration();
+  const title = "Simple PWA";
+  const options = {
+    body,
+  };
+
+  if (registration && "showNotification" in registration) {
+    registration.showNotification(title, options);
+  } else {
+    new Notification(title, options);
+  }
 }
